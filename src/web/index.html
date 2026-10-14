@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaflet</title>
+<link rel="icon" href="__leaflet__/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" id="hljsTheme" href="__leaflet__/vendor/highlight-github.min.css">
+<link rel="stylesheet" href="__leaflet__/css/leaflet.css">
+</head>
+<body>
+<nav id="sidebar" aria-label="Files in this folder">
+  <div class="brand">
+    <div class="brand-text">
+      <span class="mark">Leaflet</span>
+      <span class="folder" id="folderName" title=""></span>
+    </div>
+    <button type="button" class="icon-btn" id="collapseBtn" aria-label="Collapse sidebar" title="Collapse sidebar (Ctrl+\)">
+      <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+  </div>
+  <div class="files" id="fileList" role="list"></div>
+  <button type="button" class="new-file" id="newFileBtn">
+    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    New file
+  </button>
+</nav>
+
+<main>
+  <header class="toolbar">
+    <div class="seg" id="viewSeg" role="tablist" aria-label="View">
+      <button type="button" role="tab" data-view="preview" title="Preview (Alt+1)">
+        <svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        Preview
+      </button>
+      <button type="button" role="tab" data-view="split" title="Preview + editor (Alt+2)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></svg>
+        Split
+      </button>
+      <button type="button" role="tab" data-view="editor" title="Editor (Alt+3)">
+        <svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>
+        Editor
+      </button>
+    </div>
+
+    <div class="doc-title">
+      <span id="docName"></span>
+      <span class="save-state" id="saveState" aria-live="polite"></span>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn primary" id="saveBtn" title="Save (Ctrl+S)" disabled>
+        <svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></svg>
+        <span>Save</span>
+      </button>
+
+      <div class="popover-wrap">
+        <button type="button" class="icon-btn" id="displayBtn" aria-haspopup="true" aria-expanded="false" title="Display settings">
+          <svg viewBox="0 0 24 24"><path d="M4 19 9 5l5 14M5.8 14h6.4"/><path d="M15 19l3-8 3 8M15.9 16.5h4.2"/></svg>
+        </button>
+        <div class="popover" id="displayPanel" hidden>
+          <div class="pop-row">
+            <span class="pop-label">Theme</span>
+            <div class="themes" id="themeSeg">
+              <button type="button" class="swatch" data-theme="paper" title="Paper"></button>
+              <button type="button" class="swatch" data-theme="sepia" title="Sepia"></button>
+              <button type="button" class="swatch" data-theme="slate" title="Slate"></button>
+              <button type="button" class="swatch" data-theme="midnight" title="Midnight"></button>
+            </div>
+          </div>
+          <label class="pop-row">
+            <span class="pop-label">Line width</span>
+            <input type="range" id="widthRange" min="40" max="140" step="4">
+            <output id="widthValue"></output>
+          </label>
+          <label class="pop-row">
+            <span class="pop-label">Text size</span>
+            <input type="range" id="fontRange" min="13" max="26" step="1">
+            <output id="fontValue"></output>
+          </label>
+          <label class="pop-row check">
+            <input type="checkbox" id="syncScroll">
+            <span>Sync scrolling in Split view</span>
+          </label>
+        </div>
+      </div>
+
+      <button type="button" class="icon-btn" id="fullscreenBtn" title="Full screen (F11)">
+        <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      </button>
+      <button type="button" class="icon-btn" id="exportBtn" title="Export to PDF (Ctrl+P)">
+        <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+      </button>
+      <span class="action-sep" aria-hidden="true"></span>
+      <button type="button" class="icon-btn close-btn" id="closeBtn" title="Close Leaflet" aria-label="Close Leaflet">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="banner" id="banner" hidden>
+    <span id="bannerText"></span>
+    <div class="banner-actions" id="bannerActions"></div>
+  </div>
+
+  <div class="work" id="work" data-view="preview">
+    <section class="pane" id="previewPane" aria-label="Preview">
+      <article id="preview" class="markdown"></article>
+    </section>
+    <div class="divider" id="divider" role="separator" aria-orientation="vertical" tabindex="0" title="Drag to resize"></div>
+    <section class="pane" id="editorPane" aria-label="Editor">
+      <div class="format-bar" id="formatBar" aria-label="Formatting">
+        <button type="button" data-fmt="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+        <button type="button" data-fmt="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+        <button type="button" data-fmt="strike" title="Strikethrough"><s>S</s></button>
+        <span class="sep"></span>
+        <button type="button" data-fmt="h2" title="Heading">H</button>
+        <button type="button" data-fmt="quote" title="Quote">&ldquo;</button>
+        <button type="button" data-fmt="ul" title="Bulleted list">&bull;&ndash;</button>
+        <button type="button" data-fmt="task" title="Task list">&#9744;</button>
+        <span class="sep"></span>
+        <button type="button" data-fmt="code" title="Inline code">&lt;/&gt;</button>
+        <button type="button" data-fmt="link" title="Link (Ctrl+K)">Link</button>
+        <button type="button" data-fmt="table" title="Table">Table</button>
+      </div>
+      <textarea id="editor" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Markdown source"></textarea>
+    </section>
+  </div>
+
+  <footer class="statusbar">
+    <span id="statWords"></span>
+    <span id="statRead"></span>
+    <span class="grow"></span>
+    <span id="statCursor"></span>
+    <span class="hint">Ctrl+S save · Alt+1/2/3 switch view</span>
+  </footer>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="__leaflet__/vendor/marked.umd.js"></script>
+<script src="__leaflet__/vendor/highlight.min.js"></script>
+<script src="__leaflet__/vendor/mermaid.min.js"></script>
+<script type="module" src="__leaflet__/js/app.js"></script>
+</body>
+</html>

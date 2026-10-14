@@ -1,0 +1,8 @@
+* text=auto
+# Windows scripts must keep CRLF line endings
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+*.png binary
+# Bundled third-party code: don't diff or count it as ours
+src/web/vendor/** linguist-vendored -diff

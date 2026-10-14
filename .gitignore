@@ -1,0 +1,18 @@
+# OS / editor
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# Leaflet leaves these only if a save is interrupted
+*.leaflet-tmp
+
+# Tooling
+.playwright-mcp/
+node_modules/
+
+# Local logs, builds and AI-assistant settings
+*.log
+*.exe
+.claude/

@@ -1,0 +1,46 @@
+{
+  "name": "leaflet-md-opener",
+  "version": "2.0.0",
+  "description": "Double-click any Markdown file in Windows to read it full screen - or edit it in place. Offline viewer and editor with live preview and Mermaid diagrams.",
+  "keywords": [
+    "markdown",
+    "md",
+    "viewer",
+    "editor",
+    "preview",
+    "mermaid",
+    "windows",
+    "file-association"
+  ],
+  "license": "MIT",
+  "author": "Rajveer Tomar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/<your-username>/leaflet-md-opener.git"
+  },
+  "homepage": "https://github.com/<your-username>/leaflet-md-opener#readme",
+  "bugs": "https://github.com/<your-username>/leaflet-md-opener/issues",
+  "bin": {
+    "leaflet-md": "bin/leaflet-md.js"
+  },
+  "scripts": {
+    "postinstall": "node bin/postinstall.js",
+    "test": "powershell -NoProfile -ExecutionPolicy Bypass -File tests/Leaflet.Helpers.Tests.ps1",
+    "start": "node bin/leaflet-md.js examples/welcome.md"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "scripts/",
+    "examples/",
+    "Leaflet.bat",
+    "CHANGELOG.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "os": [
+    "win32"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
